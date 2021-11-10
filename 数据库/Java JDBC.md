@@ -36,3 +36,58 @@ VALUES(1,zhansan,123456,zs@sina.com,1980-12-04),
 
 （2）导入数据库驱动
 
+下载数据库驱动，导入lib
+
+（3）编写测试类
+
+```Java
+package com.xu.jdbc;
+
+
+import java.sql.*;
+
+// 一个JDBC测试程序
+public class JdbcFirst {	
+    public static void main(String[] args) throws ClassNotFoundException, SQLException {
+        // 1.加载驱动，固定写法加载驱动	
+        Class.forName("com.mysql.jdbc.Driver");
+        // 2.用户信息
+        String url = "jdbc:mysql://1.117.228.214:3306/learn_sql?useUnicode=true&characterEncoding=utf8&useSSL=false";
+        String username = "learn_sql";
+        String pasword = "3dkrEwCwze7r3ECS";
+        // 3.获取连接
+        Connection conn = DriverManager.getConnection(url, username, pasword);
+        // 4.执行sql
+        Statement statement = conn.createStatement();
+        String sql = "select * from users";
+        ResultSet res = statement.executeQuery(sql);
+
+        while (res.next()) {
+            System.out.println("id=" + res.getObject("id"));
+            System.out.println("name=" + res.getObject("name"));
+            System.out.println("password=" + res.getObject("password"));
+            System.out.println("email=" + res.getObject("email"));
+            System.out.println("birthday=" + res.getObject("birthday"));
+        }
+
+        // 5.释放连接
+        res.close();
+        statement.cancel();
+        conn.close();
+    }
+
+}
+
+```
+
+#### 步骤总结
+
+1.加载驱动
+
+2.连接数据库DriverManager
+
+3.获取sql执行对象Statement	
+
+4.获取返回的结果集ResultSet
+
+5.释放连接
